@@ -15,7 +15,7 @@ static void drawCell(int x, int y, float r, float g, float b) {
     glEnd();
 }
 
-void drawTextCustomAxis(float x, float y, const char* text) {
+void drawText(float x, float y, const char* text) {
     glRasterPos2f(x, y);
     for(const char* c = text; *c != '\0'; c++) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
@@ -29,13 +29,6 @@ void drawTextWCentralized(const char* text, float height_offset) {
     }
 
     glRasterPos2f(baseWidth - (stringWidth/2), baseHeight - height_offset);
-    for(const char* c = text; *c != '\0'; c++) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
-    }
-}
-
-void drawText(float x, float y, const char* text) {
-    glRasterPos2f(x, y);
     for(const char* c = text; *c != '\0'; c++) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
     }
@@ -105,23 +98,22 @@ void drawGameOver(const Game* game) {
 
     // Title
     glColor3f(1.0f, 0.0f, 0.0f); // red
-    drawTextCustomAxis(WINDOW_WIDTH_SIZE/2 - 70, WINDOW_HEIGHT_SIZE/2 + 60, "GAME OVER");
+    drawTextWCentralized("GAME OVER", 0);
 
     // Scores
     char scoreText[50];
-    sprintf(scoreText, "Current score: %d", game->score);
+    sprintf(scoreText, "Score: %d", game->score);
     glColor3f(1.0f, 1.0f, 1.0f); // Branco
-    drawTextCustomAxis(WINDOW_WIDTH_SIZE/2 - 50, WINDOW_HEIGHT_SIZE/2 + 20, scoreText);
+    drawTextWCentralized(scoreText, 30);
 
-    // High score
-    char highScoreText[50];
-    sprintf(highScoreText, "Record: %d", game->highestScore);
-    drawTextCustomAxis(WINDOW_WIDTH_SIZE/2 - 50, WINDOW_HEIGHT_SIZE/2 - 10, highScoreText);
+    // Highest score
+    char highestScoreText[50];
+    sprintf(highestScoreText, "Record: %d", game->highestScore);
+    drawTextWCentralized(highestScoreText, 60);
 
     // Options
-    drawTextCustomAxis(WINDOW_WIDTH_SIZE/2 - 120, WINDOW_HEIGHT_SIZE/2 - 50, "Press R to reload");
-    drawTextCustomAxis(WINDOW_WIDTH_SIZE/2 - 100, WINDOW_HEIGHT_SIZE/2 - 80, "Press ESC to leave =(");
-
+    drawTextWCentralized("Press R to reload", 120);
+    drawTextWCentralized("Press ESC to leave =(", 150);
 }
 
 void drawHUD(const Game* game) {
@@ -134,4 +126,21 @@ void drawHUD(const Game* game) {
     glColor3f(1.0f, 1.0f, 1.0f);
     drawText(10, WINDOW_HEIGHT_SIZE - 20, scoreText);
     drawText(WINDOW_WIDTH_SIZE - 100, WINDOW_HEIGHT_SIZE - 20, levelText);
+}
+
+void drawPause(const Game* game) {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
+    glBegin(GL_QUADS);
+    glVertex2i(0, 0);
+    glVertex2i(WINDOW_WIDTH_SIZE, 0);
+    glVertex2i(WINDOW_WIDTH_SIZE, WINDOW_HEIGHT_SIZE);
+    glVertex2i(0, WINDOW_HEIGHT_SIZE);
+    glEnd();
+    glDisable(GL_BLEND);
+
+    glColor3f(1.0f, 1.0f, 0.0f);
+    drawTextWCentralized("PAUSED", 0);
+    drawTextWCentralized("Press ESC to continue", 30);
 }

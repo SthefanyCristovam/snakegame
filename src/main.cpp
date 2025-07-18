@@ -17,21 +17,7 @@ void display() {
 
         case GAME_PAUSED:
             drawGame(&game);
-            // Overlay de pausa
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
-            glBegin(GL_QUADS);
-                glVertex2i(0, 0);
-                glVertex2i(WINDOW_WIDTH_SIZE, 0);
-                glVertex2i(WINDOW_WIDTH_SIZE, WINDOW_HEIGHT_SIZE);
-                glVertex2i(0, WINDOW_HEIGHT_SIZE);
-            glEnd();
-            glDisable(GL_BLEND);
-
-            glColor3f(1.0f, 1.0f, 0.0f);
-            drawTextCustomAxis(WINDOW_WIDTH_SIZE/2 - 40, WINDOW_HEIGHT_SIZE/2, "PAUSADO");
-            drawTextCustomAxis(WINDOW_WIDTH_SIZE/2 - 100, WINDOW_HEIGHT_SIZE/2 - 30, "Pressione ESC para continuar");
+            drawPause(&game);
             break;
 
         case GAME_OVER:
