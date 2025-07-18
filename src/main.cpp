@@ -4,7 +4,7 @@
 Game game;
 
 void display() {
-    glClear(GL_COLOR_BUFFER_BIT);  // Adicionado limpeza do buffer
+    glClear(GL_COLOR_BUFFER_BIT);
 
     switch(game.state) {
         case GAME_MENU:
@@ -23,27 +23,28 @@ void display() {
             glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
             glBegin(GL_QUADS);
                 glVertex2i(0, 0);
-                glVertex2i(LARGURA_JANELA, 0);
-                glVertex2i(LARGURA_JANELA, ALTURA_JANELA);
-                glVertex2i(0, ALTURA_JANELA);
+                glVertex2i(WINDOW_WIDTH_SIZE, 0);
+                glVertex2i(WINDOW_WIDTH_SIZE, WINDOW_HEIGHT_SIZE);
+                glVertex2i(0, WINDOW_HEIGHT_SIZE);
             glEnd();
             glDisable(GL_BLEND);
 
             glColor3f(1.0f, 1.0f, 0.0f);
-            drawText(LARGURA_JANELA/2 - 40, ALTURA_JANELA/2, "PAUSADO");
-            drawText(LARGURA_JANELA/2 - 100, ALTURA_JANELA/2 - 30, "Pressione ESC para continuar");
+            drawTextCustomAxis(WINDOW_WIDTH_SIZE/2 - 40, WINDOW_HEIGHT_SIZE/2, "PAUSADO");
+            drawTextCustomAxis(WINDOW_WIDTH_SIZE/2 - 100, WINDOW_HEIGHT_SIZE/2 - 30, "Pressione ESC para continuar");
             break;
 
         case GAME_OVER:
             drawGameOver(&game);
             break;
     }
+
     glutSwapBuffers();
 }
 
 void timer(int) {
     if(game.state != GAME_PLAYING) {
-        glutTimerFunc(100, timer, 0);  // Intervalo fixo para menus
+        glutTimerFunc(100, timer, 0);
         return;
     }
 
@@ -62,10 +63,10 @@ void specialKeys(int key, int x, int y) {
 }
 
 void initGL() {
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);  // Cor de fundo padrão
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(0, LARGURA_JANELA, 0, ALTURA_JANELA);
+    gluOrtho2D(0, WINDOW_WIDTH_SIZE, 0, WINDOW_HEIGHT_SIZE);
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -78,19 +79,18 @@ int main(int argc, char **argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glutInitWindowSize(LARGURA_JANELA, ALTURA_JANELA);
-    glutCreateWindow("Jogo da Cobrinha - OpenGL");
+    glutInitWindowSize(WINDOW_WIDTH_SIZE, WINDOW_HEIGHT_SIZE);
+    glutCreateWindow("Snake game - OpenGL");
 
     initGL();
     initGame(&game);
 
     glutDisplayFunc(display);
-    glutReshapeFunc(reshape);  // Adicionado callback de redimensionamento
+    glutReshapeFunc(reshape);
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(specialKeys);
     glutTimerFunc(100, timer, 0);
 
-    // Força o primeiro redesenho
     glutPostRedisplay();
 
     glutMainLoop();

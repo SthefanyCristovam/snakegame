@@ -6,8 +6,8 @@ void initGame(Game* game) {
     srand(time(NULL));
     game->state = GAME_MENU;
     game->score = 0;
-    game->highScore = 0;
-    game->speed = 150;
+    game->highestScore = 0;
+    game->speed = 200;
     game->level = 1;
     initSnake(&game->snake);
     spawnFood(&game->food, &game->snake);
@@ -32,8 +32,8 @@ void updateGame(Game* game) {
     // Verifica comida
     if(checkFoodCollision(&game->snake, &game->food)) {
         game->score += (game->food.type == 0) ? 1 : 5;
-        if(game->score > game->highScore) {
-            game->highScore = game->score;
+        if(game->score > game->highestScore) {
+            game->highestScore = game->score;
         }
 
         game->snake.grow += (game->food.type == 0) ? 1 : 3;
@@ -77,16 +77,16 @@ void handleSpecialInput(Game* game, int key, int x, int y) {
 
     switch(key) {
         case GLUT_KEY_UP:
-            changeDirection(&game->snake, DIR_UP);
+            changeDirection(&game->snake, UP);
             break;
         case GLUT_KEY_RIGHT:
-            changeDirection(&game->snake, DIR_RIGHT);
+            changeDirection(&game->snake, RIGHT);
             break;
         case GLUT_KEY_DOWN:
-            changeDirection(&game->snake, DIR_DOWN);
+            changeDirection(&game->snake, DOWN);
             break;
         case GLUT_KEY_LEFT:
-            changeDirection(&game->snake, DIR_LEFT);
+            changeDirection(&game->snake, LEFT);
             break;
     }
 }

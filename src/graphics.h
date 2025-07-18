@@ -1,13 +1,10 @@
-#ifndef GRAPHICS_H
-#define GRAPHICS_H
+#pragma once
 
-#include "game.h"  // Alterado de game" para game.h
+#include "game.h"
 
 void initGraphics();
 void drawGame(const Game* game);
 void drawMenu();
 void drawGameOver(const Game* game);
 void drawHUD(const Game* game);
-void drawText(float x, float y, const char* text);  // Adicione esta declaração
-
-#endif
+void drawTextCustomAxis(float x, float y, const char* text);

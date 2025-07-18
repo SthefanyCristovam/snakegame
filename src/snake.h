@@ -1,18 +1,16 @@
-#ifndef SNAKE_H
-#define SNAKE_H
-
+#pragma once
 #include <GL/freeglut.h>
 
-#define LARGURA_JANELA 600
-#define ALTURA_JANELA 600
-#define TAM_CELULA 20
-#define MAX_TAMANHO 50
+#define WINDOW_WIDTH_SIZE 600
+#define WINDOW_HEIGHT_SIZE 600
+#define CELL_SIZE 20
+#define MAX_SNAKE_SIZE 50
 
 typedef enum {
-    DIR_UP,
-    DIR_RIGHT,
-    DIR_DOWN,
-    DIR_LEFT
+    UP,
+    RIGHT,
+    DOWN,
+    LEFT
 } Direction;
 
 typedef struct {
@@ -20,7 +18,7 @@ typedef struct {
 } Point;
 
 typedef struct {
-    Point body[MAX_TAMANHO];
+    Point body[MAX_SNAKE_SIZE];
     int length;
     Direction direction;
     int grow;
@@ -29,20 +27,18 @@ typedef struct {
 typedef struct {
     Point position;
     int active;
-    int type; // 0=normal, 1=especial
+    int type; // 0=normal, 1=special
 } Food;
 
-// Inicialização
+// Initial configuration
 void initSnake(Snake* snake);
 void spawnFood(Food* food, const Snake* snake);
 
-// Movimento
+// Movement
 void moveSnake(Snake* snake);
 void changeDirection(Snake* snake, Direction newDir);
 
-// Colisão
+// Collision
 int checkWallCollision(const Snake* snake);
 int checkSelfCollision(const Snake* snake);
 int checkFoodCollision(const Snake* snake, const Food* food);
-
-#endif

@@ -4,12 +4,12 @@
 
 void initSnake(Snake* snake) {
     snake->length = 3;
-    snake->direction = DIR_RIGHT;
+    snake->direction = RIGHT;
     snake->grow = 0;
     
     // Posição inicial no centro
-    int startX = (LARGURA_JANELA/TAM_CELULA)/2;
-    int startY = (ALTURA_JANELA/TAM_CELULA)/2;
+    int startX = (WINDOW_WIDTH_SIZE/CELL_SIZE)/2;
+    int startY = (WINDOW_HEIGHT_SIZE/CELL_SIZE)/2;
     
     for(int i = 0; i < snake->length; i++) {
         snake->body[i].x = startX - i;
@@ -21,8 +21,8 @@ void spawnFood(Food* food, const Snake* snake) {
     int valid = 0;
     while(!valid) {
         valid = 1;
-        food->position.x = rand() % (LARGURA_JANELA/TAM_CELULA);
-        food->position.y = rand() % (ALTURA_JANELA/TAM_CELULA);
+        food->position.x = rand() % (WINDOW_WIDTH_SIZE/CELL_SIZE);
+        food->position.y = rand() % (WINDOW_HEIGHT_SIZE/CELL_SIZE);
         
         // Verifica se não está em cima da cobra
         for(int i = 0; i < snake->length; i++) {
@@ -45,22 +45,22 @@ void moveSnake(Snake* snake) {
     
     // Move cabeça
     switch(snake->direction) {
-        case DIR_UP:
+        case UP:
             snake->body[0].y++;
             break;
-        case DIR_RIGHT:
+        case RIGHT:
             snake->body[0].x++;
             break;
-        case DIR_DOWN:
+        case DOWN:
             snake->body[0].y--;
             break;
-        case DIR_LEFT:
+        case LEFT:
             snake->body[0].x--;
             break;
     }
 
     // Crescimento
-    if (snake->grow > 0 && snake->length < MAX_TAMANHO) {
+    if (snake->grow > 0 && snake->length < MAX_SNAKE_SIZE) {
         snake->body[snake->length] = snake->body[snake->length - 1]; // duplica a última célula
         snake->length++;
         snake->grow--;
@@ -70,19 +70,19 @@ void moveSnake(Snake* snake) {
 
 void changeDirection(Snake* snake, Direction newDir) {
     // Previne movimento inverso imediato
-    if((snake->direction == DIR_UP && newDir != DIR_DOWN) ||
-       (snake->direction == DIR_DOWN && newDir != DIR_UP) ||
-       (snake->direction == DIR_LEFT && newDir != DIR_RIGHT) ||
-       (snake->direction == DIR_RIGHT && newDir != DIR_LEFT)) {
+    if((snake->direction == UP && newDir != DOWN) ||
+       (snake->direction == DOWN && newDir != UP) ||
+       (snake->direction == LEFT && newDir != RIGHT) ||
+       (snake->direction == RIGHT && newDir != LEFT)) {
         snake->direction = newDir;
     }
 }
 
 int checkWallCollision(const Snake* snake) {
     return (snake->body[0].x < 0 || 
-            snake->body[0].x >= LARGURA_JANELA/TAM_CELULA ||
+            snake->body[0].x >= WINDOW_WIDTH_SIZE/CELL_SIZE ||
             snake->body[0].y < 0 || 
-            snake->body[0].y >= ALTURA_JANELA/TAM_CELULA);
+            snake->body[0].y >= WINDOW_HEIGHT_SIZE/CELL_SIZE);
 }
 
 int checkSelfCollision(const Snake* snake) {
